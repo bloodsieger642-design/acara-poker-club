@@ -1,4 +1,4 @@
-const CACHE_NAME = "acara-poker-club-v4-backend";
+const CACHE_NAME = "acara-poker-club-v5-galeria";
 const APP_SHELL = [
   "./manifest.json",
   "./icon-96.png",

@@ -142,7 +142,12 @@
     width:100%; border-radius:14px; margin-top:12px; display:none;
     border:1px solid rgba(226,178,60,.3);
   }
-  #fileInput{display:none;}
+  #cameraInput,#galleryInput{display:none;}
+  .photo-choice-row{display:flex;gap:10px;margin-top:12px;}
+  .photo-choice-row .btn{flex:1;width:auto;padding:12px 10px;font-size:13px;}
+  @media(max-width:520px){
+    .photo-choice-row{flex-direction:column;}
+  }
 
   .result-winner{
     background:linear-gradient(180deg, rgba(226,178,60,.18), rgba(226,178,60,.05));
@@ -265,7 +270,7 @@
       <button class="btn secondary" id="closeSettingsBtn">Fechar</button>
       <button class="btn" id="saveBackendBtn">Salvar servidor</button>
     </div>
-    <div id="backendStatus" style="font-size:12px; color:var(--cream-dim); margin-top:10px;"></div><div style="font-size:10.5px; color:var(--cream-dim); opacity:.6; margin-top:12px; text-align:right;">versão do app: v4-backend</div>
+    <div id="backendStatus" style="font-size:12px; color:var(--cream-dim); margin-top:10px;"></div><div style="font-size:10.5px; color:var(--cream-dim); opacity:.6; margin-top:12px; text-align:right;">versão do app: v5-galeria</div>
   </div>
 </div>
 
@@ -282,11 +287,18 @@
       <h2>📸 Analisar a mesa</h2>
       <p class="sub">Tire uma foto (ou envie uma imagem) mostrando as cartas comunitárias e as mãos dos jogadores visíveis. O app identifica as cartas e diz qual mão vence.</p>
 
-      <label class="photo-drop" id="photoDrop">
+      <div class="photo-drop" id="photoDrop">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 7h3l2-2h6l2 2h3v12H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
-        <div>Toque para tirar foto ou escolher da galeria</div>
-        <input id="fileInput" type="file" accept="image/*" capture="environment">
-      </label>
+        <div>Escolha como deseja adicionar a imagem da mesa</div>
+      </div>
+
+      <div class="photo-choice-row">
+        <button class="btn secondary" type="button" id="takePhotoBtn">📷 Tirar foto</button>
+        <button class="btn secondary" type="button" id="chooseGalleryBtn">🖼️ Escolher da galeria</button>
+      </div>
+
+      <input id="cameraInput" type="file" accept="image/*" capture="environment">
+      <input id="galleryInput" type="file" accept="image/*">
       <img id="tablePhotoPreview" alt="Prévia da mesa">
 
       <div style="margin-top:12px;">
@@ -680,7 +692,10 @@ document.getElementById('evalBtn').addEventListener('click',()=>{
 });
 
 /* ---------------- Photo analysis tab ---------------- */
-const fileInput=document.getElementById('fileInput');
+const cameraInput=document.getElementById('cameraInput');
+const galleryInput=document.getElementById('galleryInput');
+const takePhotoBtn=document.getElementById('takePhotoBtn');
+const chooseGalleryBtn=document.getElementById('chooseGalleryBtn');
 const preview=document.getElementById('tablePhotoPreview');
 const analyzeBtn=document.getElementById('analyzeBtn');
 let photoBase64=null, photoMediaType=null;
@@ -711,8 +726,17 @@ async function preparePhoto(file){
   }
 }
 
-fileInput.addEventListener('change', async ()=>{
-  const file=fileInput.files[0];
+takePhotoBtn.addEventListener('click', ()=>{
+  cameraInput.value='';
+  cameraInput.click();
+});
+
+chooseGalleryBtn.addEventListener('click', ()=>{
+  galleryInput.value='';
+  galleryInput.click();
+});
+
+async function handleSelectedPhoto(file){
   if(!file) return;
   analyzeBtn.disabled=true;
   document.getElementById('photoError').innerHTML='';
@@ -728,7 +752,10 @@ fileInput.addEventListener('change', async ()=>{
     photoBase64=null;
     document.getElementById('photoError').innerHTML='<div class="error-box">Não consegui preparar essa imagem. Tente outra foto em JPEG ou PNG.</div>';
   }
-});
+}
+
+cameraInput.addEventListener('change', ()=>handleSelectedPhoto(cameraInput.files[0]));
+galleryInput.addEventListener('change', ()=>handleSelectedPhoto(galleryInput.files[0]));
 
 function parseCardCode(code){
   if(!code || typeof code!=='string') return null;
