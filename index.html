@@ -7,16 +7,18 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Acará Poker">
-<meta name="theme-color" content="#0c3d2e">
-<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230c3d2e'/%3E%3Ccircle cx='50' cy='58' r='30' fill='%233c8c5e'/%3E%3Ccircle cx='34' cy='34' r='11' fill='%233c8c5e'/%3E%3Ccircle cx='66' cy='34' r='11' fill='%233c8c5e'/%3E%3Ccircle cx='34' cy='34' r='4.5' fill='%230c3d2e'/%3E%3Ccircle cx='66' cy='34' r='4.5' fill='%230c3d2e'/%3E%3Cellipse cx='50' cy='63' rx='13' ry='8' fill='%230c3d2e'/%3E%3Ctext x='50' y='68' font-size='12' text-anchor='middle' fill='%23f0c419'%3EA%3C/text%3E%3C/svg%3E">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230c3d2e'/%3E%3Ccircle cx='50' cy='58' r='30' fill='%233c8c5e'/%3E%3Ccircle cx='34' cy='34' r='11' fill='%233c8c5e'/%3E%3Ccircle cx='66' cy='34' r='11' fill='%233c8c5e'/%3E%3Ccircle cx='34' cy='34' r='4.5' fill='%230c3d2e'/%3E%3Ccircle cx='66' cy='34' r='4.5' fill='%230c3d2e'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#0a2e22">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --felt-1:#0c3d2e;
-    --felt-2:#0a2e23;
-    --felt-3:#155843;
+    --felt-1:#0a2e22;
+    --felt-2:#050c09;
+    --felt-3:#123f2f;
     --gold:#e2b23c;
     --gold-bright:#f4cf6b;
     --cream:#f3ecd9;
@@ -52,12 +54,11 @@
   }
   .logo{
     width:52px; height:52px; flex:none; border-radius:14px;
-    background:radial-gradient(circle at 35% 30%, #4faa73, #1c6b48 65%, #0c3d2e);
-    box-shadow:0 4px 14px rgba(0,0,0,.4), inset 0 0 0 2px rgba(244,207,107,.6);
+    background:#050505;
+    box-shadow:0 4px 14px rgba(0,0,0,.5), inset 0 0 0 2px rgba(226,178,60,.7);
     display:flex; align-items:center; justify-content:center;
-    position:relative;
+    position:relative; overflow:hidden;
   }
-  .logo svg{width:34px; height:34px;}
   .title-block{flex:1; min-width:0;}
   .title-block h1{font-size:19px; color:var(--gold-bright); line-height:1.15;}
   .title-block p{margin:2px 0 0; font-size:12px; color:var(--cream-dim); letter-spacing:.5px; text-transform:uppercase;}
@@ -245,16 +246,7 @@
 <body>
 
 <header class="app-header">
-  <div class="logo">
-    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="50" cy="60" r="26" fill="#eab74a"/>
-      <circle cx="34" cy="36" r="10" fill="#eab74a"/>
-      <circle cx="66" cy="36" r="10" fill="#eab74a"/>
-      <circle cx="34" cy="36" r="4" fill="#1c3f2c"/>
-      <circle cx="66" cy="36" r="4" fill="#1c3f2c"/>
-      <path d="M38 66 Q50 76 62 66" stroke="#1c3f2c" stroke-width="3" fill="none" stroke-linecap="round"/>
-    </svg>
-  </div>
+  <div class="logo"><img src="icon-192.png" alt="Acará Poker Club" style="width:100%;height:100%;object-fit:cover;border-radius:12px;"></div>
   <div class="title-block">
     <h1>Acará Poker Club Helper</h1>
     <p>Leitura de mesa &amp; simulador de mãos</p>
@@ -408,6 +400,13 @@ document.getElementById('saveApiKeyBtn').addEventListener('click', ()=>{
   }
 });
 refreshKeyStatus();
+
+/* ---------------- Service worker ---------------- */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch((err) => console.log("SW falhou:", err));
+  });
+}
 
 /* ---------------- Card model & evaluator ---------------- */
 const SUITS = [
