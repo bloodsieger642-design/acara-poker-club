@@ -1,11 +1,14 @@
-const CACHE_NAME = "acara-poker-club-v6-pre-apk";
+const CACHE_NAME = "acara-poker-club-v7-sounds";
 const APP_SHELL = [
   "./",
+  "./index.html",
   "./manifest.json",
   "./icon-96.png",
   "./icon-192.png",
   "./icon-512.png",
-  "./icon-512-maskable.png"
+  "./icon-512-maskable.png",
+  "./cards.mp3",
+  "./chips.mp3"
 ];
 
 self.addEventListener("install", (event) => {
