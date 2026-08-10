@@ -1,4 +1,4 @@
-const CACHE_NAME = "acara-poker-club-v1";
+const CACHE_NAME = "acara-poker-club-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -27,9 +27,6 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   const req = event.request;
-  // Never cache API calls - always go to network for those
-  if (req.url.includes("api.anthropic.com")) return;
-
   event.respondWith(
     caches.match(req).then((cached) => {
       return (
