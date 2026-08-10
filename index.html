@@ -698,6 +698,20 @@ const takePhotoBtn=document.getElementById('takePhotoBtn');
 const chooseGalleryBtn=document.getElementById('chooseGalleryBtn');
 const preview=document.getElementById('tablePhotoPreview');
 const analyzeBtn=document.getElementById('analyzeBtn');
+  const soundCards = new Audio('./cards.mp3');
+const soundChips = new Audio('./chips.mp3');
+
+soundCards.preload = 'auto';
+soundChips.preload = 'auto';
+
+function playSound(audio, volume=0.7){
+  try{
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = volume;
+    audio.play().catch(()=>{});
+  }catch(e){}
+}
 let photoBase64=null, photoMediaType=null;
 
 async function preparePhoto(file){
@@ -776,6 +790,7 @@ function parseCardCode(code){
 
 analyzeBtn.addEventListener('click', async ()=>{
   if(!photoBase64) return;
+  playSound(soundCards, 0.55);
   const loader=document.getElementById('photoLoader');
   const errBox=document.getElementById('photoError');
   const resultsDiv=document.getElementById('photoResults');
@@ -865,6 +880,9 @@ analyzeBtn.addEventListener('click', async ()=>{
 
     resultsDiv.innerHTML = winnerHtml + boardHtml + playersHtml +
       `<button class="btn secondary" id="useInSimBtn">Usar estas cartas no simulador</button>`;
+    setTimeout(()=>{
+  playSound(soundChips, 0.7);
+}, 250);
 
     document.getElementById('useInSimBtn')?.addEventListener('click', ()=>{
       boardCards = board.slice(0,5);
