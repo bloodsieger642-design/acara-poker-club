@@ -258,14 +258,14 @@
   <div style="background:var(--felt-2); border:1px solid var(--gold); border-radius:16px; padding:20px; max-width:420px; width:100%; box-shadow:var(--shadow);">
     <h2 style="font-size:16px; color:var(--gold-bright); margin-bottom:8px;">Servidor de análise</h2>
     <p style="font-size:12.5px; color:var(--cream-dim); line-height:1.6; margin-bottom:10px;">
-      Cole aqui a URL do Cloudflare Worker criado para o Acará Poker Club Helper. A chave da Anthropic fica protegida no servidor e <b>não é armazenada no celular</b>.
+      O servidor seguro já vem configurado. A chave da Anthropic fica protegida no Cloudflare Worker e <b>não é armazenada no celular</b>.
     </p>
-    <input id="backendUrlInput" type="url" inputmode="url" placeholder="https://acara-poker-api.seu-subdominio.workers.dev" style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(226,178,60,.4); background:rgba(255,255,255,.05); color:var(--cream); font-size:13px; margin-bottom:12px;">
+    <input id="backendUrlInput" type="url" inputmode="url" value="https://acara-poker-club.bloodsieger642.workers.dev" style="width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(226,178,60,.4); background:rgba(255,255,255,.05); color:var(--cream); font-size:13px; margin-bottom:12px;">
     <div class="btn-row">
       <button class="btn secondary" id="closeSettingsBtn">Fechar</button>
       <button class="btn" id="saveBackendBtn">Salvar servidor</button>
     </div>
-    <div id="backendStatus" style="font-size:12px; color:var(--cream-dim); margin-top:10px;"></div>
+    <div id="backendStatus" style="font-size:12px; color:var(--cream-dim); margin-top:10px;"></div><div style="font-size:10.5px; color:var(--cream-dim); opacity:.6; margin-top:12px; text-align:right;">versão do app: v4-backend</div>
   </div>
 </div>
 
@@ -375,6 +375,7 @@ if(!/Chrome|CriOS/.test(navigator.userAgent) || /iPhone|iPad/.test(navigator.use
 }
 
 /* ---------------- Backend settings ---------------- */
+const DEFAULT_BACKEND_URL="https://acara-poker-club.bloodsieger642.workers.dev";
 const settingsModal=document.getElementById('settingsModal');
 const backendUrlInput=document.getElementById('backendUrlInput');
 const backendStatus=document.getElementById('backendStatus');
@@ -383,8 +384,11 @@ function normalizeBackendUrl(value){
   return (value || '').trim().replace(/\/+$/, '');
 }
 function getBackendUrl(){
-  try{ return normalizeBackendUrl(localStorage.getItem('acara_poker_backend_url') || ''); }
-  catch(e){ return ''; }
+  try{
+    return normalizeBackendUrl(localStorage.getItem('acara_poker_backend_url') || DEFAULT_BACKEND_URL);
+  } catch(e){
+    return DEFAULT_BACKEND_URL;
+  }
 }
 function refreshBackendStatus(){
   const url=getBackendUrl();
