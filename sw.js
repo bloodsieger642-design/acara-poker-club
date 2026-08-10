@@ -1,5 +1,6 @@
-const CACHE_NAME = "acara-poker-club-v5-galeria";
+const CACHE_NAME = "acara-poker-club-v6-pre-apk";
 const APP_SHELL = [
+  "./",
   "./manifest.json",
   "./icon-96.png",
   "./icon-192.png",
@@ -26,26 +27,29 @@ self.addEventListener("activate", (event) => {
 self.addEventListener("fetch", (event) => {
   const req = event.request;
 
-  // Para HTML/navegação, busca a versão mais nova primeiro.
-  if (req.mode === "navigate" || (req.method === "GET" && req.headers.get("accept")?.includes("text/html"))) {
+  if (
+    req.mode === "navigate" ||
+    (req.method === "GET" && req.headers.get("accept")?.includes("text/html"))
+  ) {
     event.respondWith(
       fetch(req)
         .then((res) => {
           const copy = res.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put("./index.html", copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put("./", copy));
           return res;
         })
-        .catch(() => caches.match("./index.html"))
+        .catch(() => caches.match("./"))
     );
     return;
   }
 
-  // Para assets, cache-first.
+  if (req.method !== "GET") return;
+
   event.respondWith(
     caches.match(req).then((cached) => {
       if (cached) return cached;
       return fetch(req).then((res) => {
-        if (req.method === "GET" && res.ok) {
+        if (res.ok) {
           const copy = res.clone();
           caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         }

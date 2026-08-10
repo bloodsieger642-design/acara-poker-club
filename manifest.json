@@ -1,14 +1,20 @@
 {
+  "id": "/acara-poker-club/",
   "name": "Acará Poker Club Helper",
   "short_name": "Acará Poker",
   "description": "Leitura de mesa de poker por foto, simulador de mãos e guia de combinações.",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/acara-poker-club/",
+  "scope": "/acara-poker-club/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#050c09",
   "theme_color": "#0a2e22",
   "lang": "pt-BR",
+  "categories": [
+    "games",
+    "utilities"
+  ],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "icon-96.png",

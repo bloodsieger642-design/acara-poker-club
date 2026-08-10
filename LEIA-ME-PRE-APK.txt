@@ -1,0 +1,48 @@
+ACARÁ POKER CLUB HELPER — PRÉ-APK / TWA
+
+Package name Android:
+com.acarapokerclub.helper
+
+SITE ATUAL:
+https://bloodsieger642-design.github.io/acara-poker-club/
+
+ARQUIVOS PARA SUBSTITUIR NA RAIZ DO REPOSITÓRIO acara-poker-club:
+- index.html
+- manifest.json
+- sw.js
+- icon-96.png
+- icon-192.png
+- icon-512.png
+- icon-512-maskable.png
+
+IMPORTANTE SOBRE TWA / ASSETLINKS
+O Android procura o arquivo de associação exatamente em:
+https://bloodsieger642-design.github.io/.well-known/assetlinks.json
+
+Ele NÃO procura em:
+https://bloodsieger642-design.github.io/acara-poker-club/.well-known/assetlinks.json
+
+Por isso, a pasta TWA_ROOT_DOMAIN deste pacote NÃO deve ser enviada para dentro do
+repositório acara-poker-club esperando que a verificação funcione.
+
+Para uma TWA 100% verificada, use uma destas opções:
+A) criar o repositório de site de usuário "bloodsieger642-design.github.io" e publicar
+   nele /.well-known/assetlinks.json; ou
+B) usar um domínio próprio e publicar /.well-known/assetlinks.json na raiz dele.
+
+O arquivo assetlinks.json incluído é um MODELO. O SHA-256 só pode ser preenchido
+depois que o APK/AAB e o certificado de assinatura forem definidos.
+
+ANTES DE GERAR O APK
+1. Cloudflare:
+   ALLOWED_ORIGINS = https://bloodsieger642-design.github.io
+   GEMINI_API_KEY = Secret
+2. Confirme que o site funciona no celular.
+3. Confirme câmera e galeria.
+4. Confirme /health do Worker com provider=gemini e configured=true.
+
+DEPOIS
+- Gerar o pacote Android com package id com.acarapokerclub.helper.
+- Obter o SHA-256 do certificado.
+- Preencher assetlinks.json.
+- Publicá-lo na raiz do hostname.
